@@ -110,9 +110,17 @@ download "$base/checksums.txt" "$tmp/checksums.txt" ||
 
 # The checksum is the only thing standing between a compromised download and a
 # binary that runs the operator's own Claude sessions, so a mismatch is fatal
-# and never a warning. --ignore-missing: only one archive was downloaded, and
-# checksums.txt lists all six.
+# and never a warning.
+#
+# The entry has to be there before the check runs, because --ignore-missing (used
+# below because only one of the six archives was downloaded) treats "this file is
+# not in the list" as nothing to do rather than as a failure: GNU sha256sum exits
+# 0 in that case. Without this line, a checksums.txt that simply omitted our
+# archive would verify vacuously and install an unverified binary.
 info 'Verifying checksum'
+awk -v want="$archive" '{ sub(/^\*/, "", $2); if ($2 == want) found = 1 } END { exit !found }' \
+  "$tmp/checksums.txt" || die "checksums.txt does not list $archive - refusing to install unverified"
+
 (
   cd "$tmp"
   if command -v sha256sum > /dev/null 2>&1; then
