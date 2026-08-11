@@ -85,11 +85,30 @@ trap 'rm -rf "$tmp"' EXIT INT TERM
 
 version="${MCPTASK_VERSION:-}"
 if [ -z "$version" ]; then
-  # Read out of the API response with sed rather than jq: a host that has not
-  # installed anything yet very likely does not have jq either.
-  download "https://api.github.com/repos/$REPO/releases/latest" "$tmp/latest.json" ||
-    die "cannot reach the release list for $REPO (private repo? set GITHUB_TOKEN)"
-  version=$(sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' "$tmp/latest.json" | head -n 1)
+  # /releases/latest redirects to the tag, and that redirect is not part of the
+  # rate-limited API. This matters: api.github.com allows 60 unauthenticated
+  # requests an hour *per IP*, so behind any shared address - an office NAT, a
+  # CI runner, a VPN - the API answers 403 and the install fails for a reason
+  # that has nothing to do with the host. GitHub's own macOS runners exhaust it
+  # routinely, which is how this was found.
+  if command -v curl > /dev/null 2>&1; then
+    resolved=$(curl -fsSL -o /dev/null -w '%{url_effective}' \
+      "https://github.com/$REPO/releases/latest" 2> /dev/null || true)
+    case "$resolved" in
+      */releases/tag/*) version="${resolved##*/releases/tag/}" ;;
+    esac
+  fi
+
+  # The API is the fallback: wget has no clean equivalent of the above, and a
+  # repository with no published release gives a clearer answer here.
+  if [ -z "$version" ]; then
+    download "https://api.github.com/repos/$REPO/releases/latest" "$tmp/latest.json" ||
+      die "cannot reach the release list for $REPO (rate-limited? private repo? set GITHUB_TOKEN)"
+    # Read with sed rather than jq: a host that has not installed anything yet
+    # very likely does not have jq either.
+    version=$(sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' "$tmp/latest.json" | head -n 1)
+  fi
+
   [ -n "$version" ] || die "could not determine the latest release of $REPO"
 fi
 
