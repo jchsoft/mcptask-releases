@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "online.mcptask/mcptask",
+  "title": "mcptask.online",
+  "description": "Task manager for humans and AI coding agents: pull the next task, log progress, open a PR.",
+  "websiteUrl": "https://mcptask.online",
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcptask.online/mcp"
+    }
+  ]
+}
