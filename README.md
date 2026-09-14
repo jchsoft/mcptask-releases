@@ -50,6 +50,37 @@ mcptask_runner init      # in the project you want the runner to work on
 mcptask_runner version
 ```
 
+## MCP server
+
+mcptask.online is itself a remote MCP server — the runner is one client of it,
+Claude Code, Claude.ai, ChatGPT and any other MCP client can connect directly.
+
+| | |
+| --- | --- |
+| Endpoint | `https://mcptask.online/mcp` (Streamable HTTP) |
+| Authentication | `Authorization: Bearer <token>` or OAuth; without a token `/mcp` answers `401` with `WWW-Authenticate` |
+| Server card | [`/.well-known/mcp/server-card.json`](https://mcptask.online/.well-known/mcp/server-card.json) — every tool and resource |
+| Registry entry | [`server.json`](server.json) (`online.mcptask/mcptask`) |
+
+Put this in the project's `.mcp.json` and export your token as `MCPTASK_TOKEN`:
+
+```json
+{
+  "mcpServers": {
+    "mcptask-online": {
+      "type": "http",
+      "url": "https://mcptask.online/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MCPTASK_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+Where to get the token and how to wire up each client:
+[mcptask.online/installation](https://mcptask.online/installation?language=en).
+
 ---
 
 Issues and questions: [mcptask.online](https://mcptask.online). Proprietary —
