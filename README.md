@@ -52,6 +52,8 @@ mcptask_runner version
 
 ## MCP server
 
+[![smithery badge](https://smithery.ai/badge/chmel/mcptask)](https://smithery.ai/servers/chmel/mcptask) [![Glama connector](https://glama.ai/mcp/connectors/online.mcptask/mcptaskonline/badges/score.svg)](https://glama.ai/mcp/connectors/online.mcptask/mcptaskonline)
+
 mcptask.online is itself a remote MCP server — the runner is one client of it,
 Claude Code, Claude.ai, ChatGPT and any other MCP client can connect directly.
 
