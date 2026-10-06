@@ -32,6 +32,18 @@ On Windows, download the `windows` archive from
 [Releases](https://github.com/jchsoft/mcptask-releases/releases) and put
 `mcptask_runner.exe` on `PATH`.
 
+## The feature catalog
+
+`catalog.yml` is the runner's feature catalog in English, Czech and Slovak: one
+entry per feature, subcommand, flag, config key, harness, git host and exit
+code. It is generated in the private source repository and validated there by
+a test that fails when the catalog and the code disagree, and every release
+carries it as an asset. [mcptask.online/runner](https://mcptask.online/runner)
+renders it. The latest one is always at
+https://github.com/jchsoft/mcptask-releases/releases/latest/download/catalog.yml
+and a specific version's at
+`https://github.com/jchsoft/mcptask-releases/releases/download/<tag>/catalog.yml`.
+
 ## Verifying a manual download
 
 Every release publishes `checksums.txt` alongside the archives.
