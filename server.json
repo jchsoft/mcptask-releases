@@ -4,7 +4,7 @@
   "title": "mcptask.online",
   "description": "Autonomous AI developers on your own infrastructure: assign a task, get a pull request.",
   "websiteUrl": "https://mcptask.online",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "remotes": [
     {
       "type": "streamable-http",
