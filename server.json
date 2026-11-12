@@ -4,11 +4,22 @@
   "title": "mcptask.online",
   "description": "Autonomous AI developers on your own infrastructure: assign a task, get a pull request.",
   "websiteUrl": "https://mcptask.online",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "remotes": [
     {
       "type": "streamable-http",
       "url": "https://mcptask.online/mcp"
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/jchsoft/mcptask-releases",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://mcptask.online/logo-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
     }
   ]
 }
